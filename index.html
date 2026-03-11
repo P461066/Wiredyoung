@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wired Young | Web & Digital Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060A12;
+    --bg2: #0C1220;
+    --green: #00FFB4;
+    --green-dim: rgba(0,255,180,0.1);
+    --green-border: rgba(0,255,180,0.2);
+    --blue: #00B4FF;
+    --white: #FFFFFF;
+    --muted: rgba(255,255,255,0.45);
+    --card: rgba(255,255,255,0.03);
+    --card-border: rgba(255,255,255,0.08);
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--white); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+  .grid-bg {
+    position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(0,255,180,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,180,0.025) 1px, transparent 1px);
+    background-size: 55px 55px; pointer-events: none; z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 24px; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(6,10,18,0.88); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--card-border);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-text { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: var(--white); letter-spacing: -0.5px; }
+  .logo-text span { color: var(--green); }
+  .nav-cta {
+    background: var(--green); color: var(--bg);
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px;
+    padding: 10px 20px; border-radius: 8px; text-decoration: none;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 1; padding: 110px 24px 60px; overflow: hidden;
+  }
+  .glow { position: absolute; border-radius: 50%; pointer-events: none; }
+  .glow1 { top: -150px; left: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,255,180,0.09) 0%, transparent 65%); }
+  .glow2 { bottom: -100px; right: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,180,255,0.07) 0%, transparent 65%); }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green-dim); border: 1px solid var(--green-border);
+    border-radius: 100px; padding: 6px 14px; margin-bottom: 24px; width: fit-content;
+    animation: fadeUp 0.6s 0.2s both;
+  }
+  .badge-pulse { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(0,255,180,0.5); } 50% { box-shadow: 0 0 0 6px rgba(0,255,180,0); } }
+  .hero-badge span { color: var(--green); font-size: 11px; font-weight: 500; letter-spacing: 1.2px; text-transform: uppercase; }
+
+  h1 {
+    font-family: 'Syne', sans-serif; font-size: clamp(44px, 11vw, 80px);
+    font-weight: 800; line-height: 1.0; letter-spacing: -2.5px;
+    margin-bottom: 20px; animation: fadeUp 0.7s 0.35s both;
+  }
+  h1 .green { color: var(--green); }
+  h1 .dim { color: rgba(255,255,255,0.18); }
+
+  .hero-sub {
+    font-size: 16px; color: var(--muted); line-height: 1.75;
+    margin-bottom: 36px; font-weight: 300; max-width: 380px;
+    animation: fadeUp 0.7s 0.5s both;
+  }
+  .hero-sub strong { color: rgba(255,255,255,0.8); font-weight: 500; }
+
+  .hero-btns {
+    display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
+    animation: fadeUp 0.7s 0.65s both; margin-bottom: 44px;
+  }
+  .btn-primary {
+    background: var(--green); color: var(--bg);
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
+    padding: 15px 28px; border-radius: 8px; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+  .btn-ghost { color: rgba(255,255,255,0.5); font-size: 14px; text-decoration: none; transition: color 0.2s; }
+  .btn-ghost:hover { color: var(--white); }
+
+  .hero-stats { display: flex; gap: 12px; flex-wrap: wrap; animation: fadeUp 0.7s 0.8s both; }
+  .hstat {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 10px; padding: 14px 18px; display: flex; flex-direction: column;
+  }
+  .hstat-num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--green); line-height: 1; margin-bottom: 4px; }
+  .hstat-num.blue { color: var(--blue); }
+  .hstat-label { font-size: 11px; color: var(--muted); font-weight: 300; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    position: relative; z-index: 1; padding: 16px 0;
+    background: var(--bg2); border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); overflow: hidden;
+  }
+  .marquee-track { display: flex; animation: marquee 22s linear infinite; white-space: nowrap; width: max-content; }
+  .marquee-item {
+    display: inline-flex; align-items: center; gap: 10px; padding: 0 28px;
+    font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 600;
+    color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .mdot { color: var(--green); font-size: 14px; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SECTIONS */
+  section { position: relative; z-index: 1; padding: 80px 24px; }
+
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--green); font-size: 11px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px;
+  }
+  .section-tag::before { content: ''; display: block; width: 20px; height: 1px; background: var(--green); flex-shrink: 0; }
+
+  h2 { font-family: 'Syne', sans-serif; font-size: clamp(30px, 8vw, 46px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.08; margin-bottom: 12px; }
+  .section-sub { font-size: 15px; color: var(--muted); line-height: 1.7; font-weight: 300; margin-bottom: 36px; max-width: 360px; }
+
+  /* SERVICES */
+  .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .service-card {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 16px; padding: 22px 18px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .service-card:hover { border-color: var(--green-border); transform: translateY(-3px); }
+  .service-card.full { grid-column: 1 / -1; }
+  .sc-icon {
+    width: 44px; height: 44px; background: var(--green-dim); border: 1px solid var(--green-border);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
+  }
+  .sc-icon svg { width: 20px; height: 20px; }
+  .sc-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 7px; }
+  .sc-desc { font-size: 12px; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+  /* PRICING */
+  #pricing { background: var(--bg2); }
+  .pricing-list { display: flex; flex-direction: column; gap: 12px; }
+  .price-card {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 16px; overflow: hidden; transition: border-color 0.3s;
+  }
+  .price-card.featured { border-color: var(--green); }
+  .price-card-header {
+    padding: 20px 22px; display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; user-select: none;
+  }
+  .pc-name { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+  .price-card.featured .pc-name { color: var(--green); }
+  .pc-price { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800; color: var(--white); line-height: 1; }
+  .price-card.featured .pc-price { color: var(--green); }
+  .pc-period { font-size: 11px; color: var(--muted); font-weight: 300; margin-top: 3px; }
+  .pc-arrow { color: var(--muted); font-size: 16px; transition: transform 0.3s; flex-shrink: 0; }
+
+  .price-card-body { padding: 0 22px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; }
+  .price-card.open .price-card-body { max-height: 500px; padding: 4px 22px 22px; }
+
+  .pf {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; font-size: 13px; color: rgba(255,255,255,0.65); font-weight: 300;
+  }
+  .pf::before {
+    content: ''; width: 16px; height: 16px; flex-shrink: 0;
+    background: var(--green-dim); border: 1px solid var(--green-border); border-radius: 50%;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%2300FFB4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: center;
+  }
+  .price-btn {
+    display: block; margin-top: 16px; padding: 13px; border-radius: 8px;
+    text-align: center; text-decoration: none;
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+    background: var(--card); border: 1px solid var(--card-border); color: var(--white);
+    transition: opacity 0.2s;
+  }
+  .price-card.featured .price-btn { background: var(--green); color: var(--bg); border-color: var(--green); }
+  .price-btn:hover { opacity: 0.82; }
+
+  /* HOW IT WORKS */
+  .steps { display: flex; flex-direction: column; position: relative; }
+  .steps::before {
+    content: ''; position: absolute; left: 23px; top: 32px; bottom: 32px;
+    width: 1px; background: linear-gradient(to bottom, var(--green), rgba(0,255,180,0.05));
+  }
+  .step { display: flex; gap: 20px; align-items: flex-start; padding-bottom: 28px; }
+  .step:last-child { padding-bottom: 0; }
+  .step-num {
+    width: 46px; height: 46px; background: var(--bg2); border: 1px solid var(--green-border);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; color: var(--green);
+    flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .step-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 5px; margin-top: 10px; }
+  .step-desc { font-size: 13px; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+  /* WHY US */
+  #why { background: var(--bg2); }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .why-card {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 14px; padding: 20px 16px; transition: border-color 0.3s;
+  }
+  .why-card:hover { border-color: var(--green-border); }
+  .why-icon { width: 38px; height: 38px; background: var(--green-dim); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .why-icon svg { width: 18px; height: 18px; }
+  .why-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+  .why-desc { font-size: 12px; color: var(--muted); line-height: 1.6; font-weight: 300; }
+
+  /* CTA */
+  #contact { text-align: center; }
+  .cta-box {
+    background: var(--card); border: 1px solid var(--green-border);
+    border-radius: 20px; padding: 48px 24px; position: relative; overflow: hidden;
+  }
+  .cta-box::before {
+    content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+    width: 300px; height: 200px; background: radial-gradient(circle, rgba(0,255,180,0.07) 0%, transparent 70%); pointer-events: none;
+  }
+  .cta-box h2 { margin-bottom: 12px; font-size: clamp(28px, 7vw, 38px); }
+  .cta-box p { color: var(--muted); font-size: 14px; font-weight: 300; line-height: 1.7; margin-bottom: 30px; }
+  .contact-btns { display: flex; flex-direction: column; gap: 12px; }
+  .contact-btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 16px; border-radius: 10px; text-decoration: none;
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .contact-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+  .contact-btn.wa { background: #25D366; color: #fff; }
+  .contact-btn.email { background: var(--card); border: 1px solid var(--card-border); color: var(--white); }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg2); border-top: 1px solid var(--card-border);
+    padding: 28px 24px; position: relative; z-index: 1; text-align: center;
+  }
+  .footer-logo { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; text-decoration: none; }
+  .footer-logo-text { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; color: var(--white); }
+  .footer-logo-text span { color: var(--green); }
+  .footer-text { font-size: 12px; color: var(--muted); font-weight: 300; line-height: 1.8; }
+
+  /* EASTER EGG */
+  .easter-egg {
+    position: fixed; bottom: -200px; left: 0; right: 0;
+    background: var(--bg2); border-top: 2px solid var(--green);
+    padding: 24px; z-index: 999; text-align: center;
+    transition: bottom 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .easter-egg.show { bottom: 0; }
+  .easter-egg p { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--green); margin-bottom: 4px; }
+  .easter-egg small { font-size: 12px; color: var(--muted); font-weight: 300; }
+  .egg-close { position: absolute; top: 12px; right: 16px; background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
+
+  .hidden-sig { font-size: 0; color: transparent; user-select: none; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- EASTER EGG -->
+<div class="easter-egg" id="egg">
+  <button class="egg-close" onclick="document.getElementById('egg').classList.remove('show')">✕</button>
+  <p>👋 Ntshepe. You found it.</p>
+  <small>Pablo · 10.03.2006 · Built from nothing · 🔌</small>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg id="logoTap" width="34" height="34" viewBox="0 0 40 40" fill="none" style="cursor:pointer;flex-shrink:0">
+      <circle cx="20" cy="20" r="18" stroke="rgba(0,255,180,0.25)" stroke-width="1"/>
+      <circle cx="20" cy="20" r="11" stroke="rgba(0,255,180,0.1)" stroke-width="1" stroke-dasharray="3 3"/>
+      <circle cx="20" cy="20" r="3" fill="#00FFB4"/>
+      <line x1="20" y1="2" x2="20" y2="9" stroke="#00FFB4" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="20" y1="31" x2="20" y2="38" stroke="#00FFB4" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="2" y1="20" x2="9" y2="20" stroke="#00FFB4" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="31" y1="20" x2="38" y2="20" stroke="#00FFB4" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="20" cy="9" r="1.5" fill="#00FFB4"/>
+      <circle cx="20" cy="31" r="1.5" fill="#00FFB4"/>
+      <circle cx="9" cy="20" r="1.5" fill="#00FFB4"/>
+      <circle cx="31" cy="20" r="1.5" fill="#00FFB4"/>
+      <polyline points="9,9 12,9 12,12" stroke="rgba(0,255,180,0.35)" stroke-width="0.8" fill="none"/>
+      <polyline points="31,9 28,9 28,12" stroke="rgba(0,255,180,0.35)" stroke-width="0.8" fill="none"/>
+      <polyline points="9,31 12,31 12,28" stroke="rgba(0,255,180,0.35)" stroke-width="0.8" fill="none"/>
+      <polyline points="31,31 28,31 28,28" stroke="rgba(0,255,180,0.35)" stroke-width="0.8" fill="none"/>
+    </svg>
+    <div class="logo-text">WIRED<span>.</span>YOUNG</div>
+  </a>
+  <a href="https://wa.me/27692815900?text=Hi%2C%20I%20want%20a%20website%20quote" class="nav-cta">WhatsApp Us</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="glow glow1"></div>
+  <div class="glow glow2"></div>
+
+  <div class="hero-badge">
+    <div class="badge-pulse"></div>
+    <span>Northern Cape · Kuruman</span>
+  </div>
+
+  <h1>Your business<br><span class="green">plugged in.</span><br><span class="dim">online.</span></h1>
+
+  <p class="hero-sub">Professional websites for <strong>hair salons, clinics, guesthouses and shops.</strong> Affordable. Fast. Built to get you customers.</p>
+
+  <div class="hero-btns">
+    <a href="https://wa.me/27692815900?text=Hi%2C%20I%20want%20a%20free%20website%20quote" class="btn-primary">💬 Get a Free Quote</a>
+    <a href="#pricing" class="btn-ghost">View Pricing →</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-num">R1,500</div><div class="hstat-label">Starting price</div></div>
+    <div class="hstat"><div class="hstat-num blue">5–7</div><div class="hstat-label">Days to go live</div></div>
+    <div class="hstat"><div class="hstat-num">100%</div><div class="hstat-label">Mobile friendly</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="mdot">⚡</span> Website Design</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> Logo Design</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> Google Business</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> Facebook Pages</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> WhatsApp Business</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> Monthly Maintenance</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> SEO</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> Website Design</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> Logo Design</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> Google Business</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> Facebook Pages</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> WhatsApp Business</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> Monthly Maintenance</span>
+    <span class="marquee-item"><span class="mdot">⚡</span> SEO</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-tag">What we offer</div>
+  <h2>Everything your<br>business needs online</h2>
+  <p class="section-sub">From website to Google — we handle it all.</p>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="sc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FFB4" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <div class="sc-title">Website Design</div>
+      <div class="sc-desc">Professional sites that work perfectly on phones. Live in 5–7 days.</div>
+    </div>
+    <div class="service-card">
+      <div class="sc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FFB4" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      </div>
+      <div class="sc-title">Logo Design</div>
+      <div class="sc-desc">Custom logo that makes your business look professional instantly.</div>
+    </div>
+    <div class="service-card">
+      <div class="sc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FFB4" stroke-width="1.8" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <div class="sc-title">Google Business</div>
+      <div class="sc-desc">Show up on Google Maps when customers search near them.</div>
+    </div>
+    <div class="service-card">
+      <div class="sc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FFB4" stroke-width="1.8" stroke-linecap="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </div>
+      <div class="sc-title">Facebook Page</div>
+      <div class="sc-desc">Professional business page fully set up and ready to go.</div>
+    </div>
+    <div class="service-card full">
+      <div class="sc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FFB4" stroke-width="1.8" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      </div>
+      <div class="sc-title">Monthly Maintenance</div>
+      <div class="sc-desc">We keep your website updated and running every month. You focus on your business — we handle your site. From R200/month.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-tag">Pricing</div>
+  <h2>Transparent.<br>No surprises.</h2>
+  <p class="section-sub">All packages include mobile design and free support after launch.</p>
+
+  <div class="pricing-list">
+    <div class="price-card" onclick="toggleCard(this)">
+      <div class="price-card-header">
+        <div><div class="pc-name">Starter</div><div class="pc-price">R1,500</div><div class="pc-period">Once-off setup</div></div>
+        <div class="pc-arrow">▾</div>
+      </div>
+      <div class="price-card-body">
+        <div class="pf">3-page website</div>
+        <div class="pf">Mobile friendly design</div>
+        <div class="pf">Contact details page</div>
+        <div class="pf">Google Maps integration</div>
+        <div class="pf">1 month free support</div>
+        <a href="https://wa.me/27692815900?text=Hi%2C%20Starter%20package%20please" class="price-btn">Get Started →</a>
+      </div>
+    </div>
+
+    <div class="price-card featured open" onclick="toggleCard(this)">
+      <div class="price-card-header">
+        <div><div class="pc-name">Business ★ Most Popular</div><div class="pc-price">R2,500</div><div class="pc-period">Once-off setup</div></div>
+        <div class="pc-arrow" style="transform:rotate(180deg)">▾</div>
+      </div>
+      <div class="price-card-body" style="max-height:500px;padding:4px 22px 22px">
+        <div class="pf">5-page website</div>
+        <div class="pf">Mobile friendly design</div>
+        <div class="pf">Services & photo gallery</div>
+        <div class="pf">WhatsApp chat button</div>
+        <div class="pf">Google Business setup</div>
+        <div class="pf">Basic SEO included</div>
+        <div class="pf">2 months free support</div>
+        <a href="https://wa.me/27692815900?text=Hi%2C%20Business%20package%20please" class="price-btn">Get Started →</a>
+      </div>
+    </div>
+
+    <div class="price-card" onclick="toggleCard(this)">
+      <div class="price-card-header">
+        <div><div class="pc-name">Premium</div><div class="pc-price">R4,000</div><div class="pc-period">Once-off setup</div></div>
+        <div class="pc-arrow">▾</div>
+      </div>
+      <div class="price-card-body">
+        <div class="pf">8-page website</div>
+        <div class="pf">Online booking/enquiry form</div>
+        <div class="pf">Photo & video gallery</div>
+        <div class="pf">Full SEO optimization</div>
+        <div class="pf">Google Business setup</div>
+        <div class="pf">3 months free support</div>
+        <a href="https://wa.me/27692815900?text=Hi%2C%20Premium%20package%20please" class="price-btn">Get Started →</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:12px;padding:16px 18px;background:var(--card);border:1px solid var(--card-border);border-radius:12px;">
+    <p style="font-size:12px;color:var(--muted);font-weight:300;line-height:1.7;"><strong style="color:var(--white);font-weight:500;">Add-ons:</strong> Logo R300+ · Google Business R250 · Facebook Page R200 · Extra pages R250 each · Monthly maintenance from R200/m</p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-tag">Process</div>
+  <h2>Live in 5<br>simple steps</h2>
+  <p class="section-sub">No technical knowledge needed from your side at all.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><div class="step-content"><div class="step-title">WhatsApp Us</div><div class="step-desc">Tell us about your business and what you need. We reply fast.</div></div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-content"><div class="step-title">Free Quote</div><div class="step-desc">We send a clear quote. No hidden costs. No commitment needed.</div></div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-content"><div class="step-title">50% Deposit</div><div class="step-desc">Pay 50% upfront. We start building your website immediately.</div></div></div>
+    <div class="step"><div class="step-num">04</div><div class="step-content"><div class="step-title">Review & Approve</div><div class="step-desc">We show you the site. Request changes until you're 100% happy.</div></div></div>
+    <div class="step"><div class="step-num">05</div><div class="step-content"><div class="step-title">Go Live</div><div class="step-desc">Pay the remaining 50%. Your site goes live. Customers find you online.</div></div></div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="section-tag">Why Wired Young</div>
+  <h2>Built different.<br>For you.</h2>
+  <p class="section-sub">We understand Northern Cape because we are from here.</p>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00FFB4" stroke-width="1.8" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <div class="why-title">100% Local</div>
+      <div class="why-desc">Based in Kuruman. We know the Northern Cape market.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00FFB4" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+      <div class="why-title">Affordable</div>
+      <div class="why-desc">Prices designed for small businesses. Not agency rates.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00FFB4" stroke-width="1.8" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+      <div class="why-title">Fast Delivery</div>
+      <div class="why-desc">Your site live in 5–7 working days. No long waiting.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00FFB4" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="why-title">Full Support</div>
+      <div class="why-desc">We don't disappear after launch. Always on WhatsApp.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact">
+  <div class="cta-box">
+    <div class="section-tag" style="justify-content:center;margin-bottom:14px;">Get in touch</div>
+    <h2>Ready to get<br>online?</h2>
+    <p>WhatsApp us for a free quote. No commitment. We'll tell you exactly what your website costs before you pay anything.</p>
+    <div class="contact-btns">
+      <a href="https://wa.me/27692815900?text=Hi%2C%20I%20want%20a%20website%20for%20my%20business" class="contact-btn wa">💬 WhatsApp — 069 281 5900</a>
+      <a href="mailto:pabalelojantjie2@gmail.com" class="contact-btn email">✉️ Email Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">
+    <svg width="22" height="22" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="rgba(0,255,180,0.3)" stroke-width="1"/><circle cx="20" cy="20" r="3" fill="#00FFB4"/><line x1="20" y1="2" x2="20" y2="9" stroke="#00FFB4" stroke-width="1.5" stroke-linecap="round"/><line x1="20" y1="31" x2="20" y2="38" stroke="#00FFB4" stroke-width="1.5" stroke-linecap="round"/><line x1="2" y1="20" x2="9" y2="20" stroke="#00FFB4" stroke-width="1.5" stroke-linecap="round"/><line x1="31" y1="20" x2="38" y2="20" stroke="#00FFB4" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <div class="footer-logo-text">WIRED<span>.</span>YOUNG</div>
+  </a>
+  <div class="footer-text">Web & Digital Services · Kuruman, Northern Cape<br>069 281 5900 · © 2026 Wired Young</div>
+  <!-- Pablo was here. Ntshepe. 10.03.2006. If you found this in the code — you know. 🔌 -->
+  <div class="hidden-sig" data-pablo="10032006" data-ntshepe="trustme" aria-hidden="true">Pablo · Ntshepe · 10.03.2006</div>
+</footer>
+
+<script>
+  // Accordion
+  function toggleCard(card) {
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.price-card').forEach(c => {
+      c.classList.remove('open');
+      const a = c.querySelector('.pc-arrow');
+      if (a) a.style.transform = '';
+    });
+    if (!isOpen) {
+      card.classList.add('open');
+      const a = card.querySelector('.pc-arrow');
+      if (a) a.style.transform = 'rotate(180deg)';
+    }
+  }
+
+  // Easter egg 1 — tap logo 5x
+  let taps = 0, tapTimer;
+  document.getElementById('logoTap').addEventListener('click', function(e) {
+    e.preventDefault();
+    taps++;
+    clearTimeout(tapTimer);
+    tapTimer = setTimeout(() => taps = 0, 2000);
+    if (taps >= 5) { taps = 0; document.getElementById('egg').classList.add('show'); }
+  });
+
+  // Easter egg 2 — type "pablo" on keyboard
+  let buf = '';
+  document.addEventListener('keydown', e => {
+    buf += e.key.toLowerCase();
+    buf = buf.slice(-5);
+    if (buf === 'pablo') document.getElementById('egg').classList.add('show');
+  });
+
+  // Easter egg 3 — hold footer logo for 3 seconds
+  let holdTimer;
+  document.querySelector('.footer-logo').addEventListener('touchstart', () => {
+    holdTimer = setTimeout(() => document.getElementById('egg').classList.add('show'), 3000);
+  });
+  document.querySelector('.footer-logo').addEventListener('touchend', () => clearTimeout(holdTimer));
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; } });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.service-card, .price-card, .step, .why-card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = `opacity 0.5s ${i*0.07}s ease, transform 0.5s ${i*0.07}s ease`;
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
